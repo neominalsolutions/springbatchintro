@@ -16,13 +16,15 @@ public class PrintCriticalStockTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-       List<Product> filteredProducts = (List<Product>)chunkContext.getStepContext().getJobExecutionContext().get("filteredProducts");
+
+
+       List<Product> filteredProducts = (List<Product>)chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("filteredProducts");
 
        contribution.incrementReadCount(); // 1 adet veri okuma işlemi yapıldı
        contribution.incrementWriteCount(filteredProducts.size()); // Toplamda Bu Step içerisinde bu kadar veri üzerinde yazma işlemi yapıldı
         contribution.incrementFilterCount(filteredProducts.size());
 
-        System.out.println("PrintCriticalStockTasklet");
+        System.out.println("PrintCriticalStockTasklet" + filteredProducts.size());
 
         filteredProducts.forEach(x->
                System.out.println(x.getName() + " " + x.getStock().toString()));

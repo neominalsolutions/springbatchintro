@@ -25,8 +25,8 @@ public class ProductJobConfig {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    @Autowired
-    private Tasklet1 tasklet1;
+//    @Autowired
+//    private Tasklet1 tasklet1;
     // Tasklet ile basit bir step adımı oluşturularım
 
     @Autowired
@@ -38,16 +38,16 @@ public class ProductJobConfig {
     @Autowired
     private  FilterCriticalStockTasklet filterCriticalStockTasklet;
 
-    @Bean
-    public Step step1() {
-        return  new StepBuilder("step1",jobRepository)
-                .tasklet(tasklet1,transactionManager).build();
-    }
-
-    @Bean(name = "job1")
-    public Job job1() {
-        return new JobBuilder("job1",jobRepository).start(step1()).build();
-    }
+//    @Bean
+//    public Step step1() {
+//        return  new StepBuilder("step1",jobRepository)
+//                .tasklet(tasklet1,transactionManager).build();
+//    }
+//
+//    @Bean(name = "job1")
+//    public Job job1() {
+//        return new JobBuilder("job1",jobRepository).start(step1()).build();
+//    }
 
     // Yeni Implementasyon
 
@@ -71,9 +71,7 @@ public class ProductJobConfig {
     public Job job2() {
         return new JobBuilder("job2",jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(productFromApiStep())
-                .next(filterCriticalStockStep())
-                .next(printCriticalStockStep()).build();
+                .start(productFromApiStep()).next(filterCriticalStockStep()).next(printCriticalStockStep()).build();
     }
 
 

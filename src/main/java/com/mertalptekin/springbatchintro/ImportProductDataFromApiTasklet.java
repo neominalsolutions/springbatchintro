@@ -45,7 +45,11 @@ public class ImportProductDataFromApiTasklet implements Tasklet {
 
             List<Product> data = response.getBody().getValue();
 
-            var jobExecutionContext = chunkContext.getStepContext().getJobExecutionContext();
+
+            System.out.println("data" + data.size());
+
+
+            var jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext();
             // bu tarz veri saklama işlemleri stepler arasında runtimeda veri taşıma amaçlı kullanılır.
             jobExecutionContext.put("products", data);
 

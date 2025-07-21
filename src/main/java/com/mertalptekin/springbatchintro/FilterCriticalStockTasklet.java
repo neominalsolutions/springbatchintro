@@ -18,11 +18,16 @@ public class FilterCriticalStockTasklet implements Tasklet {
 
         try{
 
-          List<Product> products =  (List<Product>)chunkContext.getStepContext().getJobExecutionContext().get("products");
+
+
+          List<Product> products =  (List<Product>)chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("products");
+
+
+          System.out.println("filtered-products" +  products);
 
           List<Product> filteredProducts = products.stream().filter(x-> x.getStock() < 15).toList();
 
-          chunkContext.getStepContext().getJobExecutionContext().put("filteredProducts", filteredProducts);
+            chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("filteredProducts", filteredProducts);
 
             System.out.println("FilterCriticalStockTasklet");
 
