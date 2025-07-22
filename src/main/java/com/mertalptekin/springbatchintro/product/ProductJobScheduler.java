@@ -1,7 +1,8 @@
-package com.mertalptekin.springbatchintro;
+package com.mertalptekin.springbatchintro.product;
 
+import com.mertalptekin.springbatchintro.JobScheduler;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -14,32 +15,25 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
-// Normal bir servis gibi Spring Bunu Cron bazlı çalıştırıcak
 @Component
-//@EnableScheduling
-public class JobScheduler {
+@EnableScheduling
+public class ProductJobScheduler {
 
     @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
-    @Qualifier("job2")
+    @Qualifier("productJob")
     private Job job;
 
-    //@Scheduled(cron ="0 * * * * *")
-    //@Scheduled(initialDelay = 5000, fixedDelay = 5000)
-    //@Scheduled(fixedRate = 5000) // fixedRate, fixedDelay job bitiminden 5000 ms sonra
+
+    @Scheduled(cron = "0 * * * * *")
     public  void runJob() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
-        try {
-            JobParameters jobParameters = new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters();
-            jobLauncher.run(job,jobParameters);
-            System.out.println("Cron Job completed");
-        }
-         catch (Exception e) {
-         }
+        var parameters = new JobParametersBuilder().addLong("date", System.currentTimeMillis()).toJobParameters();
 
+        JobExecution je = jobLauncher.run(job,parameters);
+        System.out.println("Job Status " + je.getStatus());
     }
+
 }
