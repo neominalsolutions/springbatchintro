@@ -35,10 +35,10 @@ public class ProductItemReader implements ItemReader<Product> {
     public Product read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 
         // bir sonraki kayıt varsa
-        if(iterator.hasNext()) {
-            return  iterator.next(); // bir sonraki kaydı döndür.
+        if (iterator.hasNext()) {
+            return iterator.next(); // bir sonraki kaydı döndür.
         } else {
-            return  null;
+            return null;
         }
 
     }

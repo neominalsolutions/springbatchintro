@@ -17,8 +17,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableBatchProcessing
 public class ChunkOrientedProductJobConfig {
 
+//    @Autowired
+//    private ProductItemReader productItemReader;
+
     @Autowired
-    private ProductItemReader productItemReader;
+    private ProductApiItemReader productApiItemReader;
 
     @Autowired
     private ProductItemWriter productItemWriter;
@@ -35,7 +38,7 @@ public class ChunkOrientedProductJobConfig {
     // JobContext'e veri set etmek ile işimiz kalmadı.Chunk Oriented Stepler zaten okuduğu veriyi processor ve write gönderecek şekilde tanımlıdır.
     @Bean
     public Step productStep() {
-        return new StepBuilder("productStep",jobRepository).<Product,Product>chunk(2,platformTransactionManager).reader(productItemReader).processor(productItemProcessor).writer(productItemWriter).build();
+        return new StepBuilder("productStep",jobRepository).<Product,Product>chunk(2,platformTransactionManager).reader(productApiItemReader).processor(productItemProcessor).writer(productItemWriter).build();
     }
 
     @Bean(name = "productJob")
